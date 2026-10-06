@@ -1,0 +1,5 @@
+streamlit>=1.60,<2
+cryptography>=42
+requests>=2.31
+Pillow>=10
+segno>=1.6
