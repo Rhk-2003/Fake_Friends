@@ -15,7 +15,6 @@ name, answer multiple-choice questions and real-life situations, and land on a *
 - **Memory step**: before the score and leaderboard, every player uploads a photo of themselves with the host and writes the story of the moment, what they like, and what the host could improve.
 - **Leaderboard** with 1st / 2nd / 3rd podium (with each player's DP), plus a **Memories** page.
 - **Everything saved is encrypted**, so the data can sit in a public GitHub repository.
-- **Super-admin**: the first admin account can view every other quiz on the site (read-only).
 
 ---
 
@@ -52,8 +51,6 @@ and fill in `GEMINI_API_KEY`.
    GEMINI_API_KEY = "your Gemini key"
    APP_BASE_URL = "https://your-app.streamlit.app"
    ```
-6. Open the app and **create the first quiz yourself, straight away** – the first admin account
-   becomes the super-admin. (Or pin it with `SUPER_ADMIN_USERNAME = "yourname"`.)
 
 ### Why data survives restarts
 
@@ -69,7 +66,6 @@ so saving never restarts the app. On startup the app reads everything back.
 | `GITHUB_DATA_BRANCH`, `GITHUB_DATA_PATH` | Where data is committed | `ff-data`, `vault` |
 | `GEMINI_API_KEY`, `GEMINI_MODEL` | AI grading | off, `gemini-2.5-flash-lite` |
 | `APP_BASE_URL` | Share links / QR codes | detected from the browser |
-| `SUPER_ADMIN_USERNAME` | Pin the super-admin | first account created |
 | `FF_MAX_VIDEO_MB` | Per-video upload limit | 20 |
 
 ## 3. Using it
@@ -88,7 +84,7 @@ link, a quiz password and your admin username. The dashboard's **Overview** list
 | Memories | Every friend's photo with you and their notes – kept permanently, even if you reset their attempt. You can delete one if a friend asks |
 | Share | Link, password, ready-to-paste invite, QR code |
 | Preview & publish | Validation checklist, play-through preview (records nothing), publish / pause |
-| 👑 All quizzes | **Super-admin only**: every other admin's leaderboard, memories, questions, players, videos, results, link |
+| 👑 All quizzes | 
 
 **Play** – open the link → quiz password → pick your name → intro video → rules → Section 1 →
 Section 2 (each answer is followed by the reveal) → memory photo + notes → score, outro video,
@@ -105,7 +101,7 @@ leaderboard / memories → "create your own quiz?".
   matters, ask everyone to play at the same time.
 - **Memories**: the photo is expected to be of just the two of them; "We have never taken a photo
   together" lets a player continue with notes only. By default a memory is seen by that player, the
-  host and the super-admin. With **Memory wall** switched on in Settings, the other players also see
+  host. With **Memory wall** switched on in Settings, the other players also see
   the photo, the story and the "like" note – never the "could improve" note.
 - **Ties** on the leaderboard go to whoever finished faster.
 - **AI grading**: all four answers go to Gemini in one request with your answer key. 2 = same idea,
@@ -127,7 +123,7 @@ ff/
   media.py              upload validation, image re-encoding
   throttle.py           password brute-force limiter
   qr.py, runtime.py     QR code, app singletons
-  ui/                   theme, components, landing, player, admin, superadmin, shared
+  ui/                   theme, components, landing, player, admin, shared
 tests/                  62 tests (rules, security, storage, grading, full app flows)
 .streamlit/config.toml  theme + upload limit
 ```
@@ -147,7 +143,6 @@ tests/                  62 tests (rules, security, storage, grading, full app fl
 - **Who can read what** (this is what the in-app privacy note tells players):
   people with the quiz password see names, photos and the leaderboard (and the memory wall, if the
   host switched it on); the quiz creator sees everything in their quiz, including every memory;
-  the super-admin can view every quiz and its memories; and whoever holds
   `FF_MASTER_KEY` can decrypt the stored files. Nobody else can.
 - What a public repo still reveals: number and size of files and when they changed.
 
